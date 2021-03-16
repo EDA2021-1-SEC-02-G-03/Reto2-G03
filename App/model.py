@@ -36,6 +36,17 @@ assert cf
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
 """
+def newCatalog():
+
+    catalog = {'videos':None, 
+               'categories':None}
+    
+    catalog['videos'] = lt.newList('SINGLE_LINKED')
+
+    catalog['catagories'] = mp.newMap(10000,
+                                     maptype='CHAINING',
+                                     loadfactor=0.5,
+                                     comparefunction=None)
 
 # Construccion de modelos
 
