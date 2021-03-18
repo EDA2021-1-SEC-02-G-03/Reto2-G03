@@ -31,7 +31,47 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Inicialización del Catálogo de libros
 
+def initCatalog():
+    catalog = model.newCatalog()
+    return catalog
+
+def loadData(catalog):
+    """
+    Carga los datos de los archivos y cargar los datos en la
+    estructura de datos
+    """
+    loadVideos(catalog)
+    loadCategoriesNormal(catalog)
+    #loadTags(catalog)
+    #loadBooksTags(catalog)
+
+
+def loadVideos(catalog):
+    booksfile = cf.data_dir + 'videos/videos-small.csv'
+    input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
+    for video in input_file:
+        model.addVideo(catalog, video)
+def loadCategoriesNormal(catalog):
+    videos_file = cf.data_dir + 'videos/category-id.csv'
+    input_file = csv.DictReader(open(videos_file, encoding='utf-8'), delimiter='\t')
+    for category in input_file:
+        #ix_category = {category['name']:category['id']}
+        model.addCategories(catalog, category)
+"""
+def loadCategories(catalog):
+    videos_file = cf.data_dir + 'videos/category-id.csv'
+    input_file = csv.DictReader(open(videos_file, encoding='utf-8'), delimiter='\t')
+    for category in input_file:
+        model.addCategories(catalog, category)
+"""
 # Funciones para la carga de datos
+
+def getVideosCategory(catalog, category):
+    videos = model.getVideosByCategory(catalog, category)
+    return videos
+
+def find_position_category(catalog, category):
+    return model.find_position_category(catalog, category)
 
 # Funciones de ordenamiento
 

@@ -24,6 +24,7 @@ import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
 assert cf
 
 
@@ -41,6 +42,13 @@ def printMenu():
 
 catalog = None
 
+def initCatalog():
+    return controller.initCatalog()
+
+
+def loadData(catalog):
+    controller.loadData(catalog)
+
 """
 Menu principal
 """
@@ -49,9 +57,30 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        catalog = controller.initCatalog()
+        controller.loadData(catalog)
+
+        #car = mp.get(catalog['categories'], 1)
+        #car = catalog['categories']
+        #print(car)
 
     elif int(inputs[0]) == 2:
-        pass
+        n_videos = input('ingrese el numero de videos a listar\n')
+        category_name = input('Escriba una categoría\n')
+        id_number = controller.find_position_category(catalog['categories_normal'], category_name)
+        videos = controller.getVideosCategory(catalog, int(id_number))
+        no_rep = []
+        for max_liked in range(int(n_videos)):
+            actual_max = 0
+            actual_id = ''
+            title_max = ''
+            for video in lt.iterator(videos):
+                if int(video['likes']) > int(actual_max) and video['video_id'] not in no_rep:
+                    actual_max = video['likes']
+                    actual_id = video['video_id']
+                    title_max = video['title']
+            no_rep.append(actual_id)
+            print(title_max, actual_max)
 
     else:
         sys.exit(0)

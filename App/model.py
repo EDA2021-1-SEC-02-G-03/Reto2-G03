@@ -41,15 +41,56 @@ def newCatalog():
     catalog = {'videos':None, 
                'categories':None}
     
-    catalog['videos'] = lt.newList('SINGLE_LINKED')
+    catalog['videos'] = lt.newList(datastructure='SINGLE_LINKED')
 
-    catalog['catagories'] = mp.newMap(10000,
+    catalog['categories_normal'] = lt.newList(datastructure='ARRAY_LIST')
+
+    catalog['categories'] = mp.newMap(2000,
                                      maptype='CHAINING',
-                                     loadfactor=0.5,
-                                     comparefunction=None)
+                                     loadfactor=0.5)
+    return catalog
 
 # Construccion de modelos
 
+def addVideo(catalog, video):
+    lt.addLast(catalog['videos'], video)
+    addCategory(catalog, video)
+    #mp.put(catalog['categories'], int(video['category_id']), video)
+
+def addCategories(catalog, category):
+    #c = newCategory(category['id'], category['name'])
+    lt.addLast(catalog['categories_normal'], category)
+
+def addCategory(catalog, video):
+    categories = catalog['categories']
+    category = int(video['category_id'])
+    exist_category = mp.contains(categories, category)
+
+    if exist_category:
+        entry = mp.get(categories, category)
+        actual_category = me.getValue(entry)
+    else:
+        actual_category = newCategory(category)
+        mp.put(categories, category, actual_category)
+    lt.addLast(actual_category['videos'], video)
+
+def newCategory(category):
+    entry = {'category': '', 'videos': None}
+    entry['category'] = category
+    entry['videos'] = lt.newList(datastructure='SINGLE_LINKED')
+    return entry
+
+def getVideosByCategory(catalog, category):
+    category = mp.get(catalog['categories'], category)
+    if category:
+        return me.getValue(category)['videos']
+
+def find_position_category(catalog, category):
+    for runner in range(lt.size(catalog)):
+        element = lt.getElement(catalog, runner)
+        if element['name'].strip() in category.strip():
+            return element['id']
+    return False
 # Funciones para agregar informacion al catalogo
 
 # Funciones para creacion de datos
