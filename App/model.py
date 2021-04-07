@@ -91,6 +91,12 @@ def find_position_category(catalog, category):
         if element['name'].strip() in category.strip():
             return element['id']
     return False
+
+def videoSize(catalog):
+    return lt.size(catalog['videos'])
+
+def categoriesSize(catalog):
+    return lt.size(catalog['categories_normal'])
 # Funciones para agregar informacion al catalogo
 
 # Funciones para creacion de datos

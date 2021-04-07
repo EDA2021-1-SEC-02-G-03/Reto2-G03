@@ -58,8 +58,10 @@ while True:
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         catalog = controller.initCatalog()
-        controller.loadData(catalog)
-
+        data = controller.loadData(catalog)
+        print('Videos cargados: ' + str(controller.videoSize(catalog)))
+        print('Categorias cargadas: ' + str(controller.categoriesSize(catalog)))
+        print('Tiempo [ms]: ', f"{data[0]:.3f}", "-", "Memoria [kB]: ", f"{data[1]:.3f}")
         #car = mp.get(catalog['categories'], 1)
         #car = catalog['categories']
         #print(car)
