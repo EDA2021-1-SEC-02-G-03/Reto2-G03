@@ -46,8 +46,8 @@ def newCatalog():
     catalog['categories_normal'] = lt.newList(datastructure='ARRAY_LIST')
 
     catalog['categories'] = mp.newMap(2000,
-                                     maptype='CHAINING',
-                                     loadfactor=0.5)
+                                     maptype='PROBING',
+                                     loadfactor=0.8)
     return catalog
 
 # Construccion de modelos
