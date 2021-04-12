@@ -84,6 +84,7 @@ def getVideosByCategory(catalog, category):
     category = mp.get(catalog['categories'], category)
     if category:
         return me.getValue(category)['videos']
+    return None
 
 def find_position_category(catalog, category):
     for runner in range(lt.size(catalog)):
@@ -97,6 +98,8 @@ def videoSize(catalog):
 
 def categoriesSize(catalog):
     return lt.size(catalog['categories_normal'])
+
+
 # Funciones para agregar informacion al catalogo
 
 # Funciones para creacion de datos

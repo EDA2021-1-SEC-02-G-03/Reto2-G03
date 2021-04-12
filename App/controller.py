@@ -31,7 +31,7 @@ import tracemalloc
 El controlador se encarga de mediar entre la vista y el modelo.
 """
 
-# Inicialización del Catálogo de libros
+# Inicialización del Catálogo de Videos
 
 def initCatalog():
     catalog = model.newCatalog()
@@ -70,6 +70,8 @@ def loadVideos(catalog):
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for video in input_file:
         model.addVideo(catalog, video)
+
+
 def loadCategoriesNormal(catalog):
     videos_file = cf.data_dir + 'videos/category-id.csv'
     input_file = csv.DictReader(open(videos_file, encoding='utf-8'), delimiter='\t')
