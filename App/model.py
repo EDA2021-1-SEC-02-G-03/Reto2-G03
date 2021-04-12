@@ -41,20 +41,37 @@ def newCatalog():
     catalog = {'videos':None, 
                'categories':None}
     
+    #Esta lista contine todos los videos
+    #encontrados en los archivos de carga.
+
     catalog['videos'] = lt.newList(datastructure='SINGLE_LINKED')
+
+    #Esta lista contiene todas las categorias
+    #encontradas en los archivos de carga.
 
     catalog['categories_normal'] = lt.newList(datastructure='ARRAY_LIST')
 
+    #Este indice crea un map cuya llave es la categoría del video
+    
     catalog['categories'] = mp.newMap(2000,
                                      maptype='PROBING',
-                                     loadfactor=0.8)
+                                     loadfactor=0.5)
+
+    #Este indice crea un map cuya llave es el país
+
+    catalog['countries'] = mp.newMap(200,
+                                    maptype='PROBING',
+                                    loadfactor=0.5)
     return catalog
 
-# Construccion de modelos
+#|==========================|
+#|Funciones para crear datos|
+#|==========================|
 
 def addVideo(catalog, video):
     lt.addLast(catalog['videos'], video)
     addCategory(catalog, video)
+    addCountry(catalog, video)
     #mp.put(catalog['categories'], int(video['category_id']), video)
 
 def addCategories(catalog, category):
@@ -80,11 +97,34 @@ def newCategory(category):
     entry['videos'] = lt.newList(datastructure='SINGLE_LINKED')
     return entry
 
+def addCountry(catalog, video):
+    countries = catalog['countries']
+    country = video['country']
+    exist_country = mp.contains(countries, country)
+
+    if exist_country:
+        entry = mp.get(countries, country)
+        actual_country = me.getValue(entry)
+    else:
+        actual_country = newCountry(country)
+        mp.put(countries, country, actual_country)
+    lt.addLast(actual_country['videos'], video)
+
+def newCountry(country):
+    entry = {'country': '', 'videos': None}
+    entry['country'] = country
+    entry['videos'] = lt.newList(datastructure='ARRAY_LIST') 
+    return entry
+
 def getVideosByCategory(catalog, category):
     category = mp.get(catalog['categories'], category)
     if category:
         return me.getValue(category)['videos']
-    return None
+
+def getVideosByCountry(catalog, country):
+    country = mp.get(catalog['countries'], country)
+    if country:
+        return me.getValue(country)['videos']
 
 def find_position_category(catalog, category):
     for runner in range(lt.size(catalog)):
@@ -98,8 +138,6 @@ def videoSize(catalog):
 
 def categoriesSize(catalog):
     return lt.size(catalog['categories_normal'])
-
-
 # Funciones para agregar informacion al catalogo
 
 # Funciones para creacion de datos
