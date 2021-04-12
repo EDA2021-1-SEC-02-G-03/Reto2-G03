@@ -65,7 +65,7 @@ while True:
         print('Videos cargados: ' + str(controller.videoSize(catalog)))
         print('Categorias cargadas: ' + str(controller.categoriesSize(catalog)))
         print('Tiempo [ms]: ', f"{data[0]:.3f}", "-", "Memoria [kB]: ", f"{data[1]:.3f}")
-        
+
         pass
 
     elif opcion == 2:
