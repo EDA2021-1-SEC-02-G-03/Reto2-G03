@@ -37,11 +37,12 @@ operación solicitada
 
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo")
+    print("1- Cargar información en el catálogo.")
     print("2- Encontrar videos con más views que son tendencia en un determinado país, dada una categoría específica.")
     print('3- Encontrar el video que más días ha sido trending para un país específico.')
     print('4- Encontrar el video que más días ha sido trending para una categoría específica.')
     print('5- Encontrar videos diferentes con más likes en un país y con un tag específico.')
+    print('0- Salir de la aplicación.')
 catalog = None
 
 def initCatalog():
