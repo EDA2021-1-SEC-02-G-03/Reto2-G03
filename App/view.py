@@ -57,18 +57,40 @@ while True:
     printMenu()
     opcion = int(input('Seleccione una opción para continuar:\n'))
     if opcion == 1:
+    #Carga de datos.
         pass
-    
+
     elif opcion == 2:
+    #Requerimiento 1. N videos con más views que son tendencia en un país dada una categoría específica.
+
+        category_name=input('Digite el nombre de la categoría que desea:\n')
+        country=input('Digite el nombre del país que desea:\n')
+        numero_de_videos=int(input('Digite el número de videos que desea listar:\n'))
+        
         pass
 
     elif opcion==3:
+    #Requerimiento 2. Video que más días ha sido trending para un país específico.
+        
+        country=input('Digite el nombre del país que desea:\n')
+
         pass
 
     elif opcion==4:
+    #Requerimiento 3. Video que más días ha sido trending para una categoría específica. 
+
+        category_name=input('Digite el nombre de la categoría que desea:\n')
+
         pass
 
     elif opcion==5:
+    #Requerimiento 4. N videos DIFERENTES con más likes dado un país y un tag específico.
+    #El tag no es case-sensitive. Es decir, Venom es igual a venom. 
+
+        tag=input('Digite el tag del video:\n')
+        country=input('Digite el país:\n')
+        numero_de_videos=int(input('Digite el número de videos que quiere listar:\n'))
+
         pass
 
     else:
