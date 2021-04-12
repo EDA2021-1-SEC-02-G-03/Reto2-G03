@@ -66,10 +66,11 @@ def loadData(catalog):
 
 
 def loadVideos(catalog):
-    booksfile = cf.data_dir + 'videos/videos-large.csv'
+    booksfile = cf.data_dir + 'videos/videos-small.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for video in input_file:
         model.addVideo(catalog, video)
+
 def loadCategoriesNormal(catalog):
     videos_file = cf.data_dir + 'videos/category-id.csv'
     input_file = csv.DictReader(open(videos_file, encoding='utf-8'), delimiter='\t')
@@ -87,6 +88,10 @@ def loadCategories(catalog):
 
 def getVideosCategory(catalog, category):
     videos = model.getVideosByCategory(catalog, category)
+    return videos
+
+def getVideosCountry(catalog, country):
+    videos = model.getVideosByCountry(catalog, country)
     return videos
 
 def find_position_category(catalog, category):

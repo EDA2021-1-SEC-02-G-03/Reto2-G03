@@ -38,7 +38,7 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Requerimiento número 1")
 
 catalog = None
 
@@ -67,22 +67,28 @@ while True:
         #print(car)
 
     elif int(inputs[0]) == 2:
-        n_videos = input('ingrese el numero de videos a listar\n')
-        category_name = input('Escriba una categoría\n')
-        id_number = controller.find_position_category(catalog['categories_normal'], category_name)
-        videos = controller.getVideosCategory(catalog, int(id_number))
-        no_rep = []
-        for max_liked in range(int(n_videos)):
-            actual_max = 0
-            actual_id = ''
-            title_max = ''
-            for video in lt.iterator(videos):
-                if int(video['likes']) > int(actual_max) and video['video_id'] not in no_rep:
-                    actual_max = video['likes']
-                    actual_id = video['video_id']
-                    title_max = video['title']
-            no_rep.append(actual_id)
-            print(title_max, actual_max)
+        country = input('Ingrese el pais del cual desea saber información \n')
+        #n_videos = input('ingrese el numero de videos a listar\n')
+        #category_name = input('Escriba una categoría\n')
+        #print(mp.get(catalog['countries'], 'USA'))
+        country_videos = controller.getVideosCountry(catalog, country)
+        for video in lt.iterator(country_videos):
+            print(video['country'], video['views'], video['channel_title'])
+
+        # id_number = controller.find_position_category(catalog['categories_normal'], category_name)
+        # videos = controller.getVideosCategory(catalog, int(id_number))
+        # no_rep = []
+        # for max_liked in range(int(n_videos)):
+        #     actual_max = 0
+        #     actual_id = ''
+        #     title_max = ''
+        #     for video in lt.iterator(videos):
+        #         if int(video['likes']) > int(actual_max) and video['video_id'] not in no_rep:
+        #             actual_max = video['likes']
+        #             actual_id = video['video_id']
+        #             title_max = video['title']
+        #     no_rep.append(actual_id)
+        #     print(title_max, actual_max)
 
     else:
         sys.exit(0)
