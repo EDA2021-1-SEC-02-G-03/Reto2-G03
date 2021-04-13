@@ -66,7 +66,7 @@ def loadData(catalog):
 
 
 def loadVideos(catalog):
-    booksfile = cf.data_dir + 'videos/videos-small.csv'
+    booksfile = cf.data_dir + 'videos/videos-large.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for video in input_file:
         model.addVideo(catalog, video)
@@ -90,14 +90,21 @@ def getVideosCategory(catalog, category):
     videos = model.getVideosByCategory(catalog, category)
     return videos
 
-def getVideosCountry(catalog, country):
-    videos = model.getVideosByCountry(catalog, country)
+def getVideosCountry(catalog, country, category):
+    videos = model.getVideosByCountry(catalog, country, category)
     return videos
 
 def find_position_category(catalog, category):
     return model.find_position_category(catalog, category)
 
 # Funciones de ordenamiento
+
+def sortVideosByViews(catalog, country, category):
+    return model.sortVideosByViews(catalog, country, category)
+
+def sortVideosByCategoryID(catalog, list_country_views):
+
+    return model.sortVideosByCategoryID(catalog, list_country_views)
 
 # Funciones de consulta sobre el catálogo
 

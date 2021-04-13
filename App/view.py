@@ -68,12 +68,20 @@ while True:
 
     elif int(inputs[0]) == 2:
         country = input('Ingrese el pais del cual desea saber información \n')
-        #n_videos = input('ingrese el numero de videos a listar\n')
-        #category_name = input('Escriba una categoría\n')
+        n_videos = input('ingrese el numero de videos a listar\n')
+        category_name = input('Escriba una categoría\n')
+        id_number = controller.find_position_category(catalog['categories_normal'], category_name)
         #print(mp.get(catalog['countries'], 'USA'))
-        country_videos = controller.getVideosCountry(catalog, country)
-        for video in lt.iterator(country_videos):
-            print(video['country'], video['views'], video['channel_title'])
+        #country_videos = controller.sortVideosByViews(catalog, country)
+        #country_v_c = controller.sortVideosByCategoryID(catalog, country_videos)
+        country_v_c = controller.sortVideosByViews(catalog, country, id_number)
+        #country_videos = controller.sortVideosByViews(catalog, country)
+        card = 0
+        for video in lt.iterator(country_v_c):
+            card += 1
+            print(video['country'], video['title'], video['views'], video['channel_title'], video['views'])
+            if card >= 3:
+                break
 
         # id_number = controller.find_position_category(catalog['categories_normal'], category_name)
         # videos = controller.getVideosCategory(catalog, int(id_number))

@@ -30,6 +30,7 @@ from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import mergesort as ms
 assert cf
 
 """
@@ -100,20 +101,53 @@ def newCategory(category):
 def addCountry(catalog, video):
     countries = catalog['countries']
     country = video['country']
+    category = video['category_id']
     exist_country = mp.contains(countries, country)
 
     if exist_country:
         entry = mp.get(countries, country)
+        #ct_entry = mp.get(countries, category)
         actual_country = me.getValue(entry)
+        #exist_category = me.getValue(ct_entry)
+        #if exist_category:
+            #entry = mp.get(entry['categories_country'])
     else:
         actual_country = newCountry(country)
         mp.put(countries, country, actual_country)
-    lt.addLast(actual_country['videos'], video)
+    
+    exist_category = mp.contains(actual_country['categories_country'], category)
+
+    if exist_category:
+        entry_ct = mp.get(actual_country['categories_country'], category)
+        actual_category = me.getValue(entry_ct)
+    
+    else:
+        actual_category = newCategory_from_country(category)
+        mp.put(actual_country['categories_country'], category, actual_category)
+    #mp.put(actual_country, country, actual_country['categories_country'])
+    lt.addLast(actual_category['videos'], video)
+    #addData(catalog, actual_country)
+
+# def addData(catalog, actual_country):
+#     categories = entry['categories_country']
+#     pass
 
 def newCountry(country):
-    entry = {'country': '', 'videos': None}
+    #entry = {'country': '', 'videos': None}
+    entry = {'country': '', 'cateogories_country': None}
     entry['country'] = country
-    entry['videos'] = lt.newList(datastructure='ARRAY_LIST') 
+    #entry['videos'] = lt.newList(datastructure='ARRAY_LIST')
+    entry['categories_country'] = mp.newMap(65, 
+                                maptype='PROBING',
+                                loadfactor=0.5) 
+    return entry
+
+def newCategory_from_country(category):
+
+    entry = {'category': '', 'videos': None}
+    entry['category'] = category
+    entry['videos'] = lt.newList(datastructure='ARRAY_LIST')
+
     return entry
 
 def getVideosByCategory(catalog, category):
@@ -121,10 +155,16 @@ def getVideosByCategory(catalog, category):
     if category:
         return me.getValue(category)['videos']
 
-def getVideosByCountry(catalog, country):
+#Accede al mapa en donde las llaves son paises y 
+#los valores son una lista con videos
+
+def getVideosByCountry(catalog, country, category):
     country = mp.get(catalog['countries'], country)
     if country:
-        return me.getValue(country)['videos']
+        country_data = me.getValue(country)['categories_country']
+        categories = mp.get(country_data, category)
+        if categories:
+            return me.getValue(categories)['videos']
 
 def find_position_category(catalog, category):
     for runner in range(lt.size(catalog)):
@@ -138,12 +178,36 @@ def videoSize(catalog):
 
 def categoriesSize(catalog):
     return lt.size(catalog['categories_normal'])
+
 # Funciones para agregar informacion al catalogo
 
 # Funciones para creacion de datos
 
-# Funciones de consulta
+#|======================|
+#| Funciones de consulta|
+#|======================|
+
+def sortVideosByViews(catalog, country, category):
+
+    videos_country = getVideosByCountry(catalog, country, category)
+    vc_sortedByViews = ms.sort(videos_country, compareViews)
+
+    return vc_sortedByViews
+
+def sortVideosByCategoryID(catalog, list_country_views):
+
+    vc_sortedByCategory = ms.sort(list_country_views, compareCategory)
+
+    return vc_sortedByCategory
 
 # Funciones utilizadas para comparar elementos dentro de una lista
+
+def compareViews(views1, views2):
+
+    return int(views1['views']) > int(views2['views'])
+
+def compareCategory(category1, category2):
+
+    return int(category1['category_id']) > int(category2['category_id'])
 
 # Funciones de ordenamiento
