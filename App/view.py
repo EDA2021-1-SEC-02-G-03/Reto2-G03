@@ -26,7 +26,7 @@ import controller
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 assert cf
-
+from DISClib.DataStructures import mapentry as me
 
 """
 La vista se encarga de la interacción con el usuario
@@ -42,6 +42,8 @@ def printMenu():
     print('3- Encontrar el video que más días ha sido trending para un país específico.')
     print('4- Encontrar el video que más días ha sido trending para una categoría específica.')
     print('5- Encontrar videos diferentes con más likes en un país y con un tag específico.')
+    print('0- Salir de la aplicación.')
+
 catalog = None
 
 def initCatalog():
@@ -55,7 +57,7 @@ Menu principal
 """
 while True:
     printMenu()
-    opcion = int(input('Seleccione una opción para continuar:\n'))
+    opcion = int(input('Seleccione una opción para continuar: '))
     if opcion == 1:
     #Carga de datos.
 
@@ -81,6 +83,7 @@ while True:
     #Requerimiento 2. Video que más días ha sido trending para un país específico.
         
         country=input('Digite el nombre del país que desea:\n')
+        
 
         pass
 
@@ -88,6 +91,8 @@ while True:
     #Requerimiento 3. Video que más días ha sido trending para una categoría específica. 
 
         category_name=input('Digite el nombre de la categoría que desea:\n')
+        print(controller.video_most_trending_category(catalog,category_name))
+
 
         pass
 

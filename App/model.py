@@ -30,6 +30,7 @@ from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import mergesort as mg
 assert cf
 
 """
@@ -37,6 +38,7 @@ Se define la estructura de un catálogo de videos. El catálogo tendrá dos list
 los mismos.
 """
 def newCatalog():
+    #TODO: investigar lo de los números primos porque hacen falta
 
     catalog = {'videos':None, 
                'categories':None}
@@ -44,7 +46,7 @@ def newCatalog():
     #Esta lista contine todos los videos
     #encontrados en los archivos de carga.
 
-    catalog['videos'] = lt.newList(datastructure='SINGLE_LINKED')
+    catalog['videos'] = lt.newList(datastructure='ARRAY_LIST')
 
     #Esta lista contiene todas las categorias
     #encontradas en los archivos de carga.
@@ -62,11 +64,34 @@ def newCatalog():
     catalog['countries'] = mp.newMap(200,
                                     maptype='PROBING',
                                     loadfactor=0.5)
+
+    catalog['tags'] = mp.newMap(2000,
+                                maptype='PROBING',
+                                loadfactor=0.5)
     return catalog
 
 #|==========================|
 #|Funciones para crear datos|
 #|==========================|
+
+def addTags(catalog,video):
+    tags=catalog['tags']
+    tag=video['tags']
+    exist_tag=mp.contains(tags,tag)
+
+    if exist_tag:
+        entry=mp.get(tags,tag)
+        actual_tag=me.getValue(entry)
+    else:
+        actual_tag=newTag(tag)
+        mp.put(tags,tag,actual_tag)
+    lt.addLast(actual_tag['videos,'],video)
+
+def newTag(tag):
+    entry= {'tag':'','videos':None}
+    entry['tag']=tag
+    entry['videos']=lt.newList(datastructure='ARRAY_LIST')
+    return entry
 
 def addVideo(catalog, video):
     lt.addLast(catalog['videos'], video)
@@ -94,7 +119,7 @@ def addCategory(catalog, video):
 def newCategory(category):
     entry = {'category': '', 'videos': None}
     entry['category'] = category
-    entry['videos'] = lt.newList(datastructure='SINGLE_LINKED')
+    entry['videos'] = lt.newList(datastructure='ARRAY_LIST')
     return entry
 
 def addCountry(catalog, video):
@@ -147,3 +172,60 @@ def categoriesSize(catalog):
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 # Funciones de ordenamiento
+
+#Funciones de Juan Andrés
+
+def video_most_trending_days_category(catalog,category):
+    category=category.strip()
+    categoryid=''
+    centinela=True
+    i=0
+
+    #TODO Encuentre el category id!!!!!!!!!
+
+    
+    pos=1
+    while pos<=lt.size(catalog['categories_normal']):
+        element=lt.getElement(catalog['categories_normal'],pos)
+        name=element['name'].strip()
+        if category==name:
+            categoryid=element['id']
+            break
+        pos+=1
+    
+    categoryid=int(categoryid)
+
+    #Esto está bien!
+    videos_categoria=mp.get(catalog['categories'],categoryid)
+    videos_categoria1=me.getValue(videos_categoria)['videos']
+    e=0
+    repetidos={}
+    while True:
+        element=lt.getElement(videos_categoria1,e)
+        if element['title'] in repetidos:
+            repetidos[element['title']][0]+=1
+        else:
+            repetidos[element['title']]=[1,e]
+        e+=1
+        if e>lt.size(videos_categoria1):
+           break
+    
+
+    mayor=''
+    mayorvalor=0
+    for i in repetidos:
+        listavalor=repetidos[i]
+        if listavalor[0]>mayorvalor:
+            mayorvalor=listavalor[0]
+            mayor=i
+    posmayor=repetidos[mayor][1]
+    videomayor=lt.getElement(videos_categoria1,posmayor)
+    channeltitle=videomayor['channel_title']
+    mayorvalor/=2
+
+    return(mayor,channeltitle,categoryid,int(mayorvalor))
+    
+    
+
+    
+

@@ -62,29 +62,21 @@ def loadData(catalog):
     delta_memory = deltaMemory(start_memory, stop_memory)
 
     #Funciones de carga
-    loadTags(catalog)
-    loadBooksTags(catalog)
+    
+    
     loadVideos(catalog)
     loadCategoriesNormal(catalog)
     loadCategories(catalog)
 
 
+
     return delta_time, delta_memory
-
-    
-
 
 def loadVideos(catalog):
     booksfile = cf.data_dir + 'videos/videos-large.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for video in input_file:
         model.addVideo(catalog, video)
-
-def loadCountries(catalog):
-    videos_file=cf.data_dir + 'videos/videos-large.csv'
-    input_file=csv.DictReader(open(videos_file, encoding='utf-8'))
-    for video in input_file:
-        model.addCountry(catalog, video)
 
 def loadCategoriesNormal(catalog):
     videos_file = cf.data_dir + 'videos/category-id.csv'
@@ -146,3 +138,8 @@ def deltaMemory(start_memory, stop_memory):
     # de Byte -> kByte
     delta_memory = delta_memory/1024.0
     return delta_memory
+
+#Funciones de Juan Andrés
+
+def video_most_trending_category(catalog,category):
+    return model.video_most_trending_days_category(catalog,category)
