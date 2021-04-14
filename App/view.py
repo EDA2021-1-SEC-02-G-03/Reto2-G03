@@ -39,17 +39,16 @@ operación solicitada
 
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo")
-    print("2- Requerimiento número 1")
-    print("3- Requerimiento número 2")
-    print("4- Requerimiento número 3")
-    print("5- Requerimiento número 4")
-
+    print("1- Cargar información en el catálogo.")
+    print("2- Encontrar videos con más views que son tendencia en un determinado país, dada una categoría específica.")
+    print('3- Encontrar el video que más días ha sido trending para un país específico.')
+    print('4- Encontrar el video que más días ha sido trending para una categoría específica.')
+    print('5- Encontrar videos diferentes con más likes en un país y con un tag específico.')
+    print('0- Salir de la aplicación.')
 catalog = None
 
 def initCatalog():
     return controller.initCatalog()
-
 
 def loadData(catalog):
     controller.loadData(catalog)
@@ -59,8 +58,10 @@ Menu principal
 """
 while True:
     printMenu()
-    inputs = input('Seleccione una opción para continuar\n')
-    if int(inputs[0]) == 1:
+    opcion = int(input('Seleccione una opción para continuar:\n'))
+    if opcion == 1:
+    #Carga de datos.
+
         print("Cargando información de los archivos ....")
         catalog = controller.initCatalog()
         data = controller.loadData(catalog)
@@ -71,7 +72,9 @@ while True:
         #car = catalog['categories']
         #print(car)
 
-    elif int(inputs[0]) == 2:
+    elif opcion == 2:
+    #Requerimiento 1. N videos con más views que son tendencia en un país dada una categoría específica.
+
         country = input('Ingrese el pais del cual desea saber información \n')
         n_videos = input('ingrese el numero de videos a listar\n')
         category_name = input('Escriba una categoría\n')
@@ -95,7 +98,8 @@ while True:
         delta_memory = controller.deltaMemory(start_memory, stop_memory)
         print('Tiempo[ms]: ', f"{delta_time:.3f}", "-", "Memoria [kB]: ", f"{delta_memory:.3f}")
 
-    elif int(inputs[0]) == 3:
+    elif opcion==3:
+    #Requerimiento 2. Video que más días ha sido trending para un país específico.
         country = input('Ingrese el pais del cual desea saber información \n')
         delta_time = -1.0
         delta_memory = -1.0
@@ -116,12 +120,33 @@ while True:
         delta_time = stop_time - start_time
         delta_memory = controller.deltaMemory(start_memory, stop_memory)
         print('Tiempo[ms]: ', f"{delta_time:.3f}", "-", "Memoria [kB]: ", f"{delta_memory:.3f}")
-    
-    elif int(inputs[0]) == 4:
-        category_name = input('Escriba una categoría\n')
-        id_number = controller.find_position_category(catalog['categories_normal'], category_name)
+
+    elif opcion==4:
+    #Requerimiento 3. Video que más días ha sido trending para una categoría específica. 
+        category_name=input('Digite el nombre de la categoría que desea:\n')
+        
+        delta_time = -1.0
+        delta_memory = -1.0
+
+        tracemalloc.start()
+        start_time = controller.getTime()
+        start_memory = controller.getMemory()
+        
+        #AQUI VA TU CODIGO
+
+        stop_memory = controller.getMemory()
+        stop_time = controller.getTime()
+        tracemalloc.stop()
+
+        delta_time = stop_time - start_time
+        delta_memory = controller.deltaMemory(start_memory, stop_memory)
+        print('Tiempo[ms]: ', f"{delta_time:.3f}", "-", "Memoria [kB]: ", f"{delta_memory:.3f}")
+
         pass
-    elif int(inputs[0]) == 5:
+
+    elif opcion==5:
+    #Requerimiento 4. N videos DIFERENTES con más likes dado un país y un tag específico.
+    #El tag no es case-sensitive. Es decir, Venom es igual a venom. 
         country = input('Ingrese el pais del cual desea saber información \n')
         n_videos = input('ingrese el numero de videos a listar\n')
         tag = input('Ingrese el tag del video: ')
@@ -147,3 +172,4 @@ while True:
     else:
         sys.exit(0)
 sys.exit(0)
+

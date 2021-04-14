@@ -54,9 +54,9 @@ def newCatalog():
 
     #Este indice crea un map cuya llave son los paises
 
-    catalog['categories'] = mp.newMap(200,
-                                        maptype='PROBING',
-                                        loadfactor=0.5)
+    # catalog['categories'] = mp.newMap(200,
+    #                                     maptype='PROBING',
+    #                                     loadfactor=0.5)
     
     catalog['pure_country'] = mp.newMap(200,
                                      maptype='PROBING',
@@ -70,6 +70,10 @@ def newCatalog():
     catalog['countries'] = mp.newMap(200,
                                     maptype='PROBING',
                                     loadfactor=0.5)
+                                    
+    catalog['categories'] = mp.newMap(2000,
+                                     maptype='PROBING',
+                                     loadfactor=0.8)
     return catalog
 
 #|==========================|
