@@ -38,6 +38,7 @@ Se define la estructura de un catálogo de videos. El catálogo tendrá dos list
 los mismos.
 """
 def newCatalog():
+    #TODO: investigar lo de los números primos porque hacen falta
 
     catalog = {'videos':None, 
                'categories':None}
@@ -67,24 +68,51 @@ def newCatalog():
     #mapa en el cual las llaves son las diferentes
     #categorias y los valores son una lista de videos
 
+
+    catalog['categories'] = mp.newMap(2000,
+                                     maptype='PROBING',
+                                     loadfactor=0.5)
+
+    #Este indice crea un map cuya llave es el país
+
     catalog['countries'] = mp.newMap(200,
                                     maptype='PROBING',
                                     loadfactor=0.5)
 
-    catalog['categories'] = mp.newMap(2000,
-                                     maptype='PROBING',
-                                     loadfactor=0.8)
+    catalog['tags'] = mp.newMap(2000,
+                                maptype='PROBING',
+                                loadfactor=0.5)
     return catalog
 
 #|==========================|
 #|Funciones para crear datos|
 #|==========================|
 
+def addTags(catalog,video):
+    tags=catalog['tags']
+    tag=video['tags']
+    exist_tag=mp.contains(tags,tag)
+
+    if exist_tag:
+        entry=mp.get(tags,tag)
+        actual_tag=me.getValue(entry)
+    else:
+        actual_tag=newTag(tag)
+        mp.put(tags,tag,actual_tag)
+    lt.addLast(actual_tag['videos,'],video)
+
+def newTag(tag):
+    entry= {'tag':'','videos':None}
+    entry['tag']=tag
+    entry['videos']=lt.newList(datastructure='ARRAY_LIST')
+    return entry
+
 def addVideo(catalog, video):
     lt.addLast(catalog['videos'], video)
     addPureCountry(catalog, video)
     addCountry(catalog, video)
     addCategory(catalog, video)
+    addCountry(catalog, video)
     #mp.put(catalog['categories'], int(video['category_id']), video)
 
 def addCategories(catalog, category):
@@ -314,6 +342,11 @@ def find_videos_views_country(list_data, n_videos):
 
 #Requerimiento 3
 
+
+# Funciones de ordenamiento
+
+#Funciones de Juan Andrés
+
 def video_most_trending_days_category(catalog,category):
     category=category.strip()
     categoryid=''
@@ -333,7 +366,7 @@ def video_most_trending_days_category(catalog,category):
         pos+=1
     
     categoryid=int(categoryid)
-
+    print(categoryid)
     #Esto está bien!
     videos_categoria=mp.get(catalog['categories'],categoryid)
     videos_categoria1=me.getValue(videos_categoria)['videos']
@@ -364,3 +397,7 @@ def video_most_trending_days_category(catalog,category):
 
     return(mayor,channeltitle,categoryid,int(mayorvalor))
     
+    
+
+    
+

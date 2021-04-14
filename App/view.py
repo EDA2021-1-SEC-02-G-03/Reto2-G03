@@ -29,6 +29,7 @@ assert cf
 import time
 import tracemalloc
 
+from DISClib.DataStructures import mapentry as me
 
 """
 La vista se encarga de la interacción con el usuario
@@ -39,12 +40,13 @@ operación solicitada
 
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo.")
+    print("1- Cargar información en el catálogo")
     print("2- Encontrar videos con más views que son tendencia en un determinado país, dada una categoría específica.")
     print('3- Encontrar el video que más días ha sido trending para un país específico.')
     print('4- Encontrar el video que más días ha sido trending para una categoría específica.')
     print('5- Encontrar videos diferentes con más likes en un país y con un tag específico.')
     print('0- Salir de la aplicación.')
+
 catalog = None
 
 def initCatalog():
@@ -58,7 +60,7 @@ Menu principal
 """
 while True:
     printMenu()
-    opcion = int(input('Seleccione una opción para continuar:\n'))
+    opcion = int(input('Seleccione una opción para continuar: '))
     if opcion == 1:
     #Carga de datos.
 
@@ -116,6 +118,19 @@ while True:
         stop_memory = controller.getMemory()
         stop_time = controller.getTime()
         tracemalloc.stop()
+        category_name=input('Digite el nombre de la categoría que desea:\n')
+        country=input('Digite el nombre del país que desea:\n')
+        numero_de_videos=int(input('Digite el número de videos que desea listar:\n'))
+        
+        pass
+
+    elif opcion==5:
+    #Requerimiento 4. N videos DIFERENTES con más likes dado un país y un tag específico.
+    #El tag no es case-sensitive. Es decir, Venom es igual a venom. 
+
+        tag=input('Digite el tag del video:\n')
+        country=input('Digite el país:\n')
+        numero_de_videos=int(input('Digite el número de videos que quiere listar:\n'))
 
         delta_time = stop_time - start_time
         delta_memory = controller.deltaMemory(start_memory, stop_memory)
@@ -143,7 +158,6 @@ while True:
         delta_memory = controller.deltaMemory(start_memory, stop_memory)
         print('Tiempo[ms]: ', f"{delta_time:.3f}", "-", "Memoria [kB]: ", f"{delta_memory:.3f}")
 
-        pass
 
     elif opcion==5:
     #Requerimiento 4. N videos DIFERENTES con más likes dado un país y un tag específico.

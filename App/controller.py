@@ -31,7 +31,7 @@ import tracemalloc
 El controlador se encarga de mediar entre la vista y el modelo.
 """
 
-# Inicialización del Catálogo de libros
+# Inicialización del Catálogo de Videos
 
 def initCatalog():
     catalog = model.newCatalog()
@@ -42,6 +42,8 @@ def loadData(catalog):
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
     """
+
+    #Funciones de tiempo
     delta_time = -1.0
     delta_memory = -1.0
 
@@ -59,11 +61,16 @@ def loadData(catalog):
     delta_time = stop_time - start_time
     delta_memory = deltaMemory(start_memory, stop_memory)
 
+    #Funciones de carga
+    
+    
+    loadVideos(catalog)
+    loadCategoriesNormal(catalog)
+    loadCategories(catalog)
+
+
+
     return delta_time, delta_memory
-
-    #loadTags(catalog)
-    #loadBooksTags(catalog)
-
 
 def loadVideos(catalog):
     booksfile = cf.data_dir + 'videos/videos-large.csv'
@@ -77,13 +84,13 @@ def loadCategoriesNormal(catalog):
     for category in input_file:
         #ix_category = {category['name']:category['id']}
         model.addCategories(catalog, category)
-"""
+
 def loadCategories(catalog):
     videos_file = cf.data_dir + 'videos/category-id.csv'
     input_file = csv.DictReader(open(videos_file, encoding='utf-8'), delimiter='\t')
     for category in input_file:
         model.addCategories(catalog, category)
-"""
+
 # Funciones para la carga de datos
 
 # def getVideosCategory(catalog, category):
@@ -160,7 +167,7 @@ def deltaMemory(start_memory, stop_memory):
     delta_memory = delta_memory/1024.0
     return delta_memory
 
+#Funciones de Juan Andrés
+
 def video_most_trending_category(catalog,category):
     return model.video_most_trending_days_category(catalog,category)
-
-    
