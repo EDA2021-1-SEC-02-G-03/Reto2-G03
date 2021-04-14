@@ -70,7 +70,7 @@ def newCatalog():
     catalog['countries'] = mp.newMap(200,
                                     maptype='PROBING',
                                     loadfactor=0.5)
-                                    
+
     catalog['categories'] = mp.newMap(2000,
                                      maptype='PROBING',
                                      loadfactor=0.8)
@@ -291,6 +291,8 @@ def find_trending_video(list_data):
     counter += 1
     return lt.getElement(list_data, video_winner), actual_winner
 
+#Requerimiento 4
+
 def likes_tags(list_data, tag, n_videos):
     counter = 0
     for video in lt.iterator(list_data):
@@ -299,6 +301,8 @@ def likes_tags(list_data, tag, n_videos):
             if counter > int(n_videos):
                 break
             print(video['title'], video['channel_title'], video['views'], video['likes'])
+
+#Requerimiento 1
 
 def find_videos_views_country(list_data, n_videos):
     counter = 0
