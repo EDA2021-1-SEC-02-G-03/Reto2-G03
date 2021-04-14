@@ -159,3 +159,8 @@ def deltaMemory(start_memory, stop_memory):
     # de Byte -> kByte
     delta_memory = delta_memory/1024.0
     return delta_memory
+
+def video_most_trending_category(catalog,category):
+    return model.video_most_trending_days_category(catalog,category)
+
+    

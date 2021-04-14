@@ -132,7 +132,8 @@ while True:
         start_time = controller.getTime()
         start_memory = controller.getMemory()
         
-        #AQUI VA TU CODIGO
+        category_name=input('Digite el nombre de la categoría que desea:\n')
+        print(controller.video_most_trending_category(catalog,category_name))
 
         stop_memory = controller.getMemory()
         stop_time = controller.getTime()

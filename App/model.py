@@ -311,3 +311,56 @@ def find_videos_views_country(list_data, n_videos):
         if counter > int(n_videos):
             break
         print(video['country'], video['title'], video['views'], video['channel_title'], video['views'])
+
+#Requerimiento 3
+
+def video_most_trending_days_category(catalog,category):
+    category=category.strip()
+    categoryid=''
+    centinela=True
+    i=0
+
+    #TODO Encuentre el category id!!!!!!!!!
+
+    
+    pos=1
+    while pos<=lt.size(catalog['categories_normal']):
+        element=lt.getElement(catalog['categories_normal'],pos)
+        name=element['name'].strip()
+        if category==name:
+            categoryid=element['id']
+            break
+        pos+=1
+    
+    categoryid=int(categoryid)
+
+    #Esto está bien!
+    videos_categoria=mp.get(catalog['categories'],categoryid)
+    videos_categoria1=me.getValue(videos_categoria)['videos']
+    e=0
+    repetidos={}
+    while True:
+        element=lt.getElement(videos_categoria1,e)
+        if element['title'] in repetidos:
+            repetidos[element['title']][0]+=1
+        else:
+            repetidos[element['title']]=[1,e]
+        e+=1
+        if e>lt.size(videos_categoria1):
+           break
+    
+
+    mayor=''
+    mayorvalor=0
+    for i in repetidos:
+        listavalor=repetidos[i]
+        if listavalor[0]>mayorvalor:
+            mayorvalor=listavalor[0]
+            mayor=i
+    posmayor=repetidos[mayor][1]
+    videomayor=lt.getElement(videos_categoria1,posmayor)
+    channeltitle=videomayor['channel_title']
+    mayorvalor/=2
+
+    return(mayor,channeltitle,categoryid,int(mayorvalor))
+    
