@@ -86,9 +86,12 @@ def loadCategories(catalog):
 """
 # Funciones para la carga de datos
 
-def getVideosCategory(catalog, category):
-    videos = model.getVideosByCategory(catalog, category)
-    return videos
+# def getVideosCategory(catalog, category):
+#     videos = model.getVideosByCategory(catalog, category)
+#     return videos
+
+def getVideosPureCountry(catalog, country):
+    return model.getVideosByPureCountry(catalog, country)
 
 def getVideosCountry(catalog, country, category):
     videos = model.getVideosByCountry(catalog, country, category)
@@ -102,11 +105,25 @@ def find_position_category(catalog, category):
 def sortVideosByViews(catalog, country, category):
     return model.sortVideosByViews(catalog, country, category)
 
-def sortVideosByCategoryID(catalog, list_country_views):
+def sortVideosID(catalog, country):
 
-    return model.sortVideosByCategoryID(catalog, list_country_views)
+    return model.sortVideosByID(catalog, country)
+
+def sortVideosLikes(catalog, country):
+    return model.sortVideosByLikes(catalog, country)
+#def sortVideosCategoryID(catalog, category):
+
 
 # Funciones de consulta sobre el catálogo
+
+def find_trending_video(list_data):
+    return model.find_trending_video(list_data)
+
+def likes_tags(list_data, tag, n_videos):
+    return model.likes_tags(list_data, tag, n_videos)
+
+def find_videos_views_country(list_data, n_videos):
+    return model.find_videos_views_country(list_data, n_videos)
 
 def videoSize(catalog):
     return model.videoSize(catalog)

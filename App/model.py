@@ -45,20 +45,27 @@ def newCatalog():
     #Esta lista contine todos los videos
     #encontrados en los archivos de carga.
 
-    catalog['videos'] = lt.newList(datastructure='SINGLE_LINKED')
+    catalog['videos'] = lt.newList(datastructure='ARRAY_LIST')
 
     #Esta lista contiene todas las categorias
     #encontradas en los archivos de carga.
 
     catalog['categories_normal'] = lt.newList(datastructure='ARRAY_LIST')
 
-    #Este indice crea un map cuya llave es la categoría del video
+    #Este indice crea un map cuya llave son los paises
+
+    catalog['categories'] = mp.newMap(200,
+                                        maptype='PROBING',
+                                        loadfactor=0.5)
     
-    catalog['categories'] = mp.newMap(2000,
+    catalog['pure_country'] = mp.newMap(200,
                                      maptype='PROBING',
                                      loadfactor=0.5)
 
-    #Este indice crea un map cuya llave es el país
+    #Este indice crea un map en el cual las llaves son 
+    #paises y los valores que tiene cada país son un 
+    #mapa en el cual las llaves son las diferentes
+    #categorias y los valores son una lista de videos
 
     catalog['countries'] = mp.newMap(200,
                                     maptype='PROBING',
@@ -71,8 +78,9 @@ def newCatalog():
 
 def addVideo(catalog, video):
     lt.addLast(catalog['videos'], video)
-    addCategory(catalog, video)
+    addPureCountry(catalog, video)
     addCountry(catalog, video)
+    addCategory(catalog, video)
     #mp.put(catalog['categories'], int(video['category_id']), video)
 
 def addCategories(catalog, category):
@@ -81,7 +89,7 @@ def addCategories(catalog, category):
 
 def addCategory(catalog, video):
     categories = catalog['categories']
-    category = int(video['category_id'])
+    category = video['category_id']
     exist_category = mp.contains(categories, category)
 
     if exist_category:
@@ -95,7 +103,26 @@ def addCategory(catalog, video):
 def newCategory(category):
     entry = {'category': '', 'videos': None}
     entry['category'] = category
-    entry['videos'] = lt.newList(datastructure='SINGLE_LINKED')
+    entry['videos'] = lt.newList(datastructure='ARRAY_LIST')
+    return entry
+
+def addPureCountry(catalog, video):
+    countries = catalog['pure_country']
+    country = video['country']
+    exist_country = mp.contains(countries, country)
+
+    if exist_country:
+        entry = mp.get(countries, country)
+        actual_country = me.getValue(entry)
+    else:
+        actual_country = newPureCountry(country)
+        mp.put(countries, country, actual_country)
+    lt.addLast(actual_country['videos'], video)
+
+def newPureCountry(country):
+    entry = {'country': '', 'videos': None}
+    entry['country'] = country
+    entry['videos'] = lt.newList(datastructure='ARRAY_LIST')
     return entry
 
 def addCountry(catalog, video):
@@ -155,6 +182,11 @@ def getVideosByCategory(catalog, category):
     if category:
         return me.getValue(category)['videos']
 
+def getVideosByPureCountry(catalog, country):
+    country = mp.get(catalog['pure_country'], country)
+    if country:
+        return me.getValue(country)['videos']
+
 #Accede al mapa en donde las llaves son paises y 
 #los valores son una lista con videos
 
@@ -183,9 +215,9 @@ def categoriesSize(catalog):
 
 # Funciones para creacion de datos
 
-#|======================|
-#| Funciones de consulta|
-#|======================|
+#|==========================|
+#| Funciones de ordenamiento|
+#|==========================|
 
 def sortVideosByViews(catalog, country, category):
 
@@ -194,13 +226,35 @@ def sortVideosByViews(catalog, country, category):
 
     return vc_sortedByViews
 
-def sortVideosByCategoryID(catalog, list_country_views):
+def sortVideosByID(catalog, country):
 
-    vc_sortedByCategory = ms.sort(list_country_views, compareCategory)
+    videos_id = getVideosByPureCountry(catalog, country)
+    vc_sortedByCategory = ms.sort(videos_id, compareVideoID)
 
     return vc_sortedByCategory
 
-# Funciones utilizadas para comparar elementos dentro de una lista
+def sortVideosBycategID(catalog, category):
+    videos_id = getVideosByCategory(catalog, category)
+    category_id = ms.sort(videos_id, compareVideoID)
+
+    return category_id
+
+def sortVideosByLikes(catalog, country):
+    videos_likes = getVideosByPureCountry(catalog, country)
+    likes = ms.sort(videos_likes, compareLikes)
+
+    return likes
+
+# def sortVideosByID(catalog, list_country):
+
+#     sorted_by_id = ms.sort(list_country, compareVideoID)
+#     return sorted_by_id
+#|=================|
+#|Compare functions|
+#|=================|
+
+# Estas funciones son utilizadas para comparar
+# elementos dentro de una lista
 
 def compareViews(views1, views2):
 
@@ -210,4 +264,42 @@ def compareCategory(category1, category2):
 
     return int(category1['category_id']) > int(category2['category_id'])
 
-# Funciones de ordenamiento
+def compareVideoID(videoId1, videoId2):
+
+    return (videoId1['video_id'] > videoId2['video_id'])
+
+def compareLikes(like1, like2):
+
+    return int(like1['likes']) > int(like2['likes'])
+#Funciones de consulta
+
+def find_trending_video(list_data):
+    bigger_moment, actual_winner, counter = 0, 0, 0
+    actual_video = ''
+    for video in lt.iterator(list_data):
+        if video['video_id'] != actual_video:
+            actual_video = video['video_id']
+            bigger_moment = 0
+        bigger_moment += 1
+        if bigger_moment >= actual_winner:
+            actual_winner = bigger_moment
+            video_winner = counter
+    counter += 1
+    return lt.getElement(list_data, video_winner), actual_winner
+
+def likes_tags(list_data, tag, n_videos):
+    counter = 0
+    for video in lt.iterator(list_data):
+        if tag in video['tags']:
+            counter += 1
+            if counter > int(n_videos):
+                break
+            print(video['title'], video['channel_title'], video['views'], video['likes'])
+
+def find_videos_views_country(list_data, n_videos):
+    counter = 0
+    for video in lt.iterator(list_data):
+        counter += 1
+        if counter > int(n_videos):
+            break
+        print(video['country'], video['title'], video['views'], video['channel_title'], video['views'])

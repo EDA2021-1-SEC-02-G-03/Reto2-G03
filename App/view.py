@@ -26,6 +26,8 @@ import controller
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 assert cf
+import time
+import tracemalloc
 
 
 """
@@ -39,6 +41,9 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- Requerimiento número 1")
+    print("3- Requerimiento número 2")
+    print("4- Requerimiento número 3")
+    print("5- Requerimiento número 4")
 
 catalog = None
 
@@ -70,34 +75,75 @@ while True:
         country = input('Ingrese el pais del cual desea saber información \n')
         n_videos = input('ingrese el numero de videos a listar\n')
         category_name = input('Escriba una categoría\n')
+
+        delta_time = -1.0
+        delta_memory = -1.0
+
+        tracemalloc.start()
+        start_time = controller.getTime()
+        start_memory = controller.getMemory()
+
         id_number = controller.find_position_category(catalog['categories_normal'], category_name)
-        #print(mp.get(catalog['countries'], 'USA'))
-        #country_videos = controller.sortVideosByViews(catalog, country)
-        #country_v_c = controller.sortVideosByCategoryID(catalog, country_videos)
         country_v_c = controller.sortVideosByViews(catalog, country, id_number)
-        #country_videos = controller.sortVideosByViews(catalog, country)
-        card = 0
-        for video in lt.iterator(country_v_c):
-            card += 1
-            print(video['country'], video['title'], video['views'], video['channel_title'], video['views'])
-            if card >= 3:
-                break
+        controller.find_videos_views_country(country_v_c, n_videos)
 
-        # id_number = controller.find_position_category(catalog['categories_normal'], category_name)
-        # videos = controller.getVideosCategory(catalog, int(id_number))
-        # no_rep = []
-        # for max_liked in range(int(n_videos)):
-        #     actual_max = 0
-        #     actual_id = ''
-        #     title_max = ''
-        #     for video in lt.iterator(videos):
-        #         if int(video['likes']) > int(actual_max) and video['video_id'] not in no_rep:
-        #             actual_max = video['likes']
-        #             actual_id = video['video_id']
-        #             title_max = video['title']
-        #     no_rep.append(actual_id)
-        #     print(title_max, actual_max)
+        stop_memory = controller.getMemory()
+        stop_time = controller.getTime()
+        tracemalloc.stop()
 
+        delta_time = stop_time - start_time
+        delta_memory = controller.deltaMemory(start_memory, stop_memory)
+        print('Tiempo[ms]: ', f"{delta_time:.3f}", "-", "Memoria [kB]: ", f"{delta_memory:.3f}")
+
+    elif int(inputs[0]) == 3:
+        country = input('Ingrese el pais del cual desea saber información \n')
+        delta_time = -1.0
+        delta_memory = -1.0
+
+        tracemalloc.start()
+        start_time = controller.getTime()
+        start_memory = controller.getMemory()
+
+        country_videos = controller.sortVideosID(catalog, country)
+        video_trending = controller.find_trending_video(country_videos)
+        winner, trending_days = video_trending[0], video_trending[1]
+        print(winner['title'], winner['channel_title'], winner['country'], trending_days)
+
+        stop_memory = controller.getMemory()
+        stop_time = controller.getTime()
+        tracemalloc.stop()
+
+        delta_time = stop_time - start_time
+        delta_memory = controller.deltaMemory(start_memory, stop_memory)
+        print('Tiempo[ms]: ', f"{delta_time:.3f}", "-", "Memoria [kB]: ", f"{delta_memory:.3f}")
+    
+    elif int(inputs[0]) == 4:
+        category_name = input('Escriba una categoría\n')
+        id_number = controller.find_position_category(catalog['categories_normal'], category_name)
+        pass
+    elif int(inputs[0]) == 5:
+        country = input('Ingrese el pais del cual desea saber información \n')
+        n_videos = input('ingrese el numero de videos a listar\n')
+        tag = input('Ingrese el tag del video: ')
+
+        delta_time = -1.0
+        delta_memory = -1.0
+
+        tracemalloc.start()
+        start_time = controller.getTime()
+        start_memory = controller.getMemory()
+        
+        sorted_likes = controller.sortVideosLikes(catalog, country)
+        controller.likes_tags(sorted_likes, tag, n_videos)
+
+        stop_memory = controller.getMemory()
+        stop_time = controller.getTime()
+        tracemalloc.stop()
+
+        delta_time = stop_time - start_time
+        delta_memory = controller.deltaMemory(start_memory, stop_memory)
+        print('Tiempo[ms]: ', f"{delta_time:.3f}", "-", "Memoria [kB]: ", f"{delta_memory:.3f}")
+    
     else:
         sys.exit(0)
 sys.exit(0)
