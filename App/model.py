@@ -78,16 +78,17 @@ def newCatalog():
     catalog['countries'] = mp.newMap(200,
                                     maptype='PROBING',
                                     loadfactor=0.5)
-
+    '''
     catalog['tags'] = mp.newMap(2000,
                                 maptype='PROBING',
-                                loadfactor=0.5)
+                                    loadfactor=0.5)
+    '''
     return catalog
 
 #|==========================|
 #|Funciones para crear datos|
 #|==========================|
-
+'''
 def addTags(catalog,video):
     tags=catalog['tags']
     tag=video['tags']
@@ -106,7 +107,7 @@ def newTag(tag):
     entry['tag']=tag
     entry['videos']=lt.newList(datastructure='ARRAY_LIST')
     return entry
-
+'''
 def addVideo(catalog, video):
     lt.addLast(catalog['videos'], video)
     addPureCountry(catalog, video)
@@ -383,7 +384,6 @@ def video_most_trending_days_category(catalog,category):
     posmayor=repetidos[mayor][1]
     videomayor=lt.getElement(videos_categoria1,posmayor)
     channeltitle=videomayor['channel_title']
-    mayorvalor/=2
     return(mayor,channeltitle,categoryid,int(mayorvalor))
     
     

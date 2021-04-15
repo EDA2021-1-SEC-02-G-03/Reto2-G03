@@ -53,6 +53,7 @@ def loadData(catalog):
 
     loadVideos(catalog)
     loadCategoriesNormal(catalog)
+    loadCategories(catalog)
 
     stop_memory = getMemory()
     stop_time = getTime()
@@ -63,11 +64,11 @@ def loadData(catalog):
 
     #Funciones de carga
     
-    
+    '''
     loadVideos(catalog)
     loadCategoriesNormal(catalog)
     loadCategories(catalog)
-
+    '''
 
 
     return delta_time, delta_memory

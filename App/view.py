@@ -64,7 +64,7 @@ while True:
     if opcion == 1:
     #Carga de datos.
 
-        print("Cargando información de los archivos ....")
+        print("Cargando información de los archivos...")
         catalog = controller.initCatalog()
         data = controller.loadData(catalog)
         print('Videos cargados: ' + str(controller.videoSize(catalog)))
@@ -77,8 +77,9 @@ while True:
     elif opcion == 2:
     #Requerimiento 1. N videos con más views que son tendencia en un país dada una categoría específica.
 
-        country = input('Ingrese el pais del cual desea saber información \n')
-
+        country = input('Ingrese el pais del cual desea saber información: ')
+        category_name = input('Digite el nombre de la categoría que desea: ')
+        n_videos= int(input('Digite la cantidad n de videos que quiere listar: '))
         delta_time = -1.0
         delta_memory = -1.0
 
@@ -100,7 +101,7 @@ while True:
 
     elif opcion==3:
     #Requerimiento 2. Video que más días ha sido trending para un país específico.
-        country = input('Ingrese el pais del cual desea saber información \n')
+        country = input('Ingrese el pais del cual desea saber información: ')
         delta_time = -1.0
         delta_memory = -1.0
 
@@ -111,7 +112,7 @@ while True:
         country_videos = controller.sortVideosID(catalog, country)
         video_trending = controller.find_trending_video(country_videos)
         winner, trending_days = video_trending[0], video_trending[1]
-        print(winner['title'], winner['channel_title'], winner['country'], trending_days)
+        print((winner['title'], winner['channel_title'], winner['country'], trending_days))
 
         stop_memory = controller.getMemory()
         stop_time = controller.getTime()
@@ -124,7 +125,7 @@ while True:
    
     elif opcion==4:
     #Requerimiento 3. Video que más días ha sido trending para una categoría específica. 
-        category_name=input('Digite el nombre de la categoría que desea:\n')
+        category_name=input('Digite el nombre de la categoría que desea: ')
         
         delta_time = -1.0
         delta_memory = -1.0
@@ -133,7 +134,7 @@ while True:
         start_time = controller.getTime()
         start_memory = controller.getMemory()
         
-        category_name=input('Digite el nombre de la categoría que desea:\n')
+        
         print(controller.video_most_trending_category(catalog,category_name))
 
         stop_memory = controller.getMemory()
@@ -148,8 +149,8 @@ while True:
     elif opcion==5:
     #Requerimiento 4. N videos DIFERENTES con más likes dado un país y un tag específico.
     #El tag no es case-sensitive. Es decir, Venom es igual a venom. 
-        country = input('Ingrese el pais del cual desea saber información \n')
-        n_videos = input('ingrese el numero de videos a listar\n')
+        country = input('Ingrese el pais del cual desea saber información: ')
+        n_videos = input('Ingrese el numero de videos a listar: ')
         tag = input('Ingrese el tag del video: ')
 
         delta_time = -1.0
