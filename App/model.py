@@ -38,8 +38,6 @@ Se define la estructura de un catálogo de videos. El catálogo tendrá dos list
 los mismos.
 """
 def newCatalog():
-    #TODO: investigar lo de los números primos porque hacen falta
-
     catalog = {'videos':None, 
                'categories':None}
     
@@ -55,9 +53,6 @@ def newCatalog():
 
     #Este indice crea un map cuya llave son los paises
 
-    # catalog['categories'] = mp.newMap(200,
-    #                                     maptype='PROBING',
-    #                                     loadfactor=0.5)
     
     catalog['pure_country'] = mp.newMap(200,
                                      maptype='PROBING',
@@ -78,46 +73,19 @@ def newCatalog():
     catalog['countries'] = mp.newMap(200,
                                     maptype='PROBING',
                                     loadfactor=0.5)
-    '''
-    catalog['tags'] = mp.newMap(2000,
-                                maptype='PROBING',
-                                    loadfactor=0.5)
-    '''
+
     return catalog
 
-#|==========================|
-#|Funciones para crear datos|
-#|==========================|
-'''
-def addTags(catalog,video):
-    tags=catalog['tags']
-    tag=video['tags']
-    exist_tag=mp.contains(tags,tag)
+#Funciones de Creación de Datos
 
-    if exist_tag:
-        entry=mp.get(tags,tag)
-        actual_tag=me.getValue(entry)
-    else:
-        actual_tag=newTag(tag)
-        mp.put(tags,tag,actual_tag)
-    lt.addLast(actual_tag['videos,'],video)
-
-def newTag(tag):
-    entry= {'tag':'','videos':None}
-    entry['tag']=tag
-    entry['videos']=lt.newList(datastructure='ARRAY_LIST')
-    return entry
-'''
 def addVideo(catalog, video):
     lt.addLast(catalog['videos'], video)
     addPureCountry(catalog, video)
     addCountry(catalog, video)
     addCategory(catalog, video)
     addCountry(catalog, video)
-    #mp.put(catalog['categories'], int(video['category_id']), video)
 
 def addCategories(catalog, category):
-    #c = newCategory(category['id'], category['name'])
     lt.addLast(catalog['categories_normal'], category)
 
 def addCategory(catalog, video):
@@ -166,11 +134,7 @@ def addCountry(catalog, video):
 
     if exist_country:
         entry = mp.get(countries, country)
-        #ct_entry = mp.get(countries, category)
         actual_country = me.getValue(entry)
-        #exist_category = me.getValue(ct_entry)
-        #if exist_category:
-            #entry = mp.get(entry['categories_country'])
     else:
         actual_country = newCountry(country)
         mp.put(countries, country, actual_country)
@@ -184,19 +148,14 @@ def addCountry(catalog, video):
     else:
         actual_category = newCategory_from_country(category)
         mp.put(actual_country['categories_country'], category, actual_category)
-    #mp.put(actual_country, country, actual_country['categories_country'])
     lt.addLast(actual_category['videos'], video)
-    #addData(catalog, actual_country)
 
-# def addData(catalog, actual_country):
-#     categories = entry['categories_country']
-#     pass
+
+
 
 def newCountry(country):
-    #entry = {'country': '', 'videos': None}
     entry = {'country': '', 'cateogories_country': None}
     entry['country'] = country
-    #entry['videos'] = lt.newList(datastructure='ARRAY_LIST')
     entry['categories_country'] = mp.newMap(65, 
                                 maptype='PROBING',
                                 loadfactor=0.5) 
@@ -220,9 +179,6 @@ def getVideosByPureCountry(catalog, country):
     if country:
         return me.getValue(country)['videos']
 
-#Accede al mapa en donde las llaves son paises y 
-#los valores son una lista con videos
-
 def getVideosByCountry(catalog, country, category):
     country = mp.get(catalog['countries'], country)
     if country:
@@ -244,13 +200,7 @@ def videoSize(catalog):
 def categoriesSize(catalog):
     return lt.size(catalog['categories_normal'])
 
-# Funciones para agregar informacion al catalogo
-
-# Funciones para creacion de datos
-
-#|==========================|
-#| Funciones de ordenamiento|
-#|==========================|
+#Funciones de Ordenamiento
 
 def sortVideosByViews(catalog, country, category):
 
@@ -278,16 +228,7 @@ def sortVideosByLikes(catalog, country):
 
     return likes
 
-# def sortVideosByID(catalog, list_country):
-
-#     sorted_by_id = ms.sort(list_country, compareVideoID)
-#     return sorted_by_id
-#|=================|
-#|Compare functions|
-#|=================|
-
-# Estas funciones son utilizadas para comparar
-# elementos dentro de una lista
+#Compare Functions
 
 def compareViews(views1, views2):
 
@@ -304,7 +245,8 @@ def compareVideoID(videoId1, videoId2):
 def compareLikes(like1, like2):
 
     return int(like1['likes']) > int(like2['likes'])
-#Funciones de consulta
+
+#Requerimiento 2
 
 def find_trending_video(list_data):
     bigger_moment, actual_winner, counter = 0, 0, 0
@@ -329,7 +271,7 @@ def likes_tags(list_data, tag, n_videos):
             counter += 1
             if counter > int(n_videos):
                 break
-            return (video['title'],video['channel_title'],video['publish_time'],video['views'],video['likes'],video['dislikes'],video['tags'])
+            print(video['title'],video['channel_title'],video['publish_time'],video['views'],video['likes'],video['dislikes'],video['tags'])
 
 #Requerimiento 1
 
@@ -339,7 +281,7 @@ def find_videos_views_country(list_data, n_videos):
         counter += 1
         if counter > int(n_videos):
             break
-        return (video['trending_date'],video['title'],video['channel_title'],video['publish_time'],video['views'],video['likes'],video['dislikes'])
+        print(video['trending_date'],video['title'],video['channel_title'],video['publish_time'],video['views'],video['likes'],video['dislikes'])
 
 #Requerimiento 3
 

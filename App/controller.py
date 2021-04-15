@@ -42,8 +42,6 @@ def loadData(catalog):
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
     """
-
-    #Funciones de tiempo
     delta_time = -1.0
     delta_memory = -1.0
 
@@ -62,15 +60,6 @@ def loadData(catalog):
     delta_time = stop_time - start_time
     delta_memory = deltaMemory(start_memory, stop_memory)
 
-    #Funciones de carga
-    
-    '''
-    loadVideos(catalog)
-    loadCategoriesNormal(catalog)
-    loadCategories(catalog)
-    '''
-
-
     return delta_time, delta_memory
 
 def loadVideos(catalog):
@@ -83,7 +72,6 @@ def loadCategoriesNormal(catalog):
     videos_file = cf.data_dir + 'videos/category-id.csv'
     input_file = csv.DictReader(open(videos_file, encoding='utf-8'), delimiter='\t')
     for category in input_file:
-        #ix_category = {category['name']:category['id']}
         model.addCategories(catalog, category)
 
 def loadCategories(catalog):
@@ -93,10 +81,6 @@ def loadCategories(catalog):
         model.addCategories(catalog, category)
 
 # Funciones para la carga de datos
-
-# def getVideosCategory(catalog, category):
-#     videos = model.getVideosByCategory(catalog, category)
-#     return videos
 
 def getVideosPureCountry(catalog, country):
     return model.getVideosByPureCountry(catalog, country)
@@ -119,8 +103,6 @@ def sortVideosID(catalog, country):
 
 def sortVideosLikes(catalog, country):
     return model.sortVideosByLikes(catalog, country)
-#def sortVideosCategoryID(catalog, category):
-
 
 # Funciones de consulta sobre el catálogo
 
@@ -168,7 +150,7 @@ def deltaMemory(start_memory, stop_memory):
     delta_memory = delta_memory/1024.0
     return delta_memory
 
-#Funciones de Juan Andrés
+#Función Req. 3
 
 def video_most_trending_category(catalog,category):
     return model.video_most_trending_days_category(catalog,category)

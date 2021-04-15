@@ -70,12 +70,10 @@ while True:
         print('Videos cargados: ' + str(controller.videoSize(catalog)))
         print('Categorias cargadas: ' + str(controller.categoriesSize(catalog)))
         print('Tiempo [ms]: ', f"{data[0]:.3f}", "-", "Memoria [kB]: ", f"{data[1]:.3f}")
-        #car = mp.get(catalog['categories'], 1)
-        #car = catalog['categories']
-        #print(car)
+
 
     elif opcion == 2:
-    #Requerimiento 1. N videos con más views que son tendencia en un país dada una categoría específica.
+    #Requerimiento 1. 
 
         country = input('Ingrese el pais del cual desea saber información: ')
         category_name = input('Digite el nombre de la categoría que desea: ')
@@ -89,7 +87,7 @@ while True:
 
         id_number = controller.find_position_category(catalog['categories_normal'], category_name)
         country_v_c = controller.sortVideosByViews(catalog, country, id_number)
-        print(controller.find_videos_views_country(country_v_c, n_videos))
+        controller.find_videos_views_country(country_v_c, n_videos)
 
         stop_memory = controller.getMemory()
         stop_time = controller.getTime()
@@ -100,7 +98,7 @@ while True:
         print('Tiempo[ms]: ', f"{delta_time:.3f}", "-", "Memoria [kB]: ", f"{delta_memory:.3f}")
 
     elif opcion==3:
-    #Requerimiento 2. Video que más días ha sido trending para un país específico.
+    #Requerimiento 2. 
         country = input('Ingrese el pais del cual desea saber información: ')
         delta_time = -1.0
         delta_memory = -1.0
@@ -126,7 +124,7 @@ while True:
         
    
     elif opcion==4:
-    #Requerimiento 3. Video que más días ha sido trending para una categoría específica. 
+    #Requerimiento 3. 
         category_name=input('Digite el nombre de la categoría que desea: ')
         
         delta_time = -1.0
@@ -149,8 +147,7 @@ while True:
 
 
     elif opcion==5:
-    #Requerimiento 4. N videos DIFERENTES con más likes dado un país y un tag específico.
-    #El tag no es case-sensitive. Es decir, Venom es igual a venom. 
+    #Requerimiento 4. 
         country = input('Ingrese el pais del cual desea saber información: ')
         n_videos = input('Ingrese el numero de videos a listar: ')
         tag = input('Ingrese el tag del video: ')
@@ -163,7 +160,7 @@ while True:
         start_memory = controller.getMemory()
         
         sorted_likes = controller.sortVideosLikes(catalog, country)
-        print(controller.likes_tags(sorted_likes, tag, n_videos))
+        controller.likes_tags(sorted_likes, tag, n_videos)
 
 
         stop_memory = controller.getMemory()
