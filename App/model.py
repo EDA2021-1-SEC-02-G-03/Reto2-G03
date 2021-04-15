@@ -285,11 +285,6 @@ def find_videos_views_country(list_data, n_videos):
 
 #Requerimiento 3
 
-
-# Funciones de ordenamiento
-
-#Funciones de Juan Andrés
-
 def video_most_trending_days_category(catalog,category):
     category=category.strip()
     categoryid=''
