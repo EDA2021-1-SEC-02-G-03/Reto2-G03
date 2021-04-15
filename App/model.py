@@ -54,7 +54,7 @@ def newCatalog():
     #Este indice crea un map cuya llave son los paises
 
     
-    catalog['pure_country'] = mp.newMap(200,
+    catalog['pure_country'] = mp.newMap(400,
                                      maptype='PROBING',
                                      loadfactor=0.5)
 
@@ -64,13 +64,13 @@ def newCatalog():
     #categorias y los valores son una lista de videos
 
 
-    catalog['categories'] = mp.newMap(2000,
+    catalog['categories'] = mp.newMap(64,
                                      maptype='PROBING',
                                      loadfactor=0.5)
 
     #Este indice crea un map cuya llave es el país
 
-    catalog['countries'] = mp.newMap(200,
+    catalog['countries'] = mp.newMap(400,
                                     maptype='PROBING',
                                     loadfactor=0.5)
 
@@ -83,7 +83,7 @@ def addVideo(catalog, video):
     addPureCountry(catalog, video)
     addCountry(catalog, video)
     addCategory(catalog, video)
-    addCountry(catalog, video)
+    #addCountry(catalog, video)
 
 def addCategories(catalog, category):
     lt.addLast(catalog['categories_normal'], category)
@@ -156,7 +156,7 @@ def addCountry(catalog, video):
 def newCountry(country):
     entry = {'country': '', 'cateogories_country': None}
     entry['country'] = country
-    entry['categories_country'] = mp.newMap(65, 
+    entry['categories_country'] = mp.newMap(64, 
                                 maptype='PROBING',
                                 loadfactor=0.5) 
     return entry
