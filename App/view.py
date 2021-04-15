@@ -118,9 +118,11 @@ while True:
         stop_time = controller.getTime()
         tracemalloc.stop()
 
-        #category_name=input('Digite el nombre de la categoría que desea:\n')
-        #country=input('Digite el nombre del país que desea:\n')
-        #numero_de_videos=int(input('Digite el número de videos que desea listar:\n'))
+        delta_time = stop_time - start_time
+        delta_memory = controller.deltaMemory(start_memory, stop_memory)
+        print('Tiempo[ms]: ', f"{delta_time:.3f}", "-", "Memoria [kB]: ", f"{delta_memory:.3f}")
+
+       
         
    
     elif opcion==4:
