@@ -250,6 +250,7 @@ def compareLikes(like1, like2):
 
 def find_trending_video(list_data):
     bigger_moment, actual_winner, counter = 0, 0, 0
+    
     actual_video = ''
     for video in lt.iterator(list_data):
         if video['video_id'] != actual_video:
@@ -259,7 +260,7 @@ def find_trending_video(list_data):
         if bigger_moment >= actual_winner:
             actual_winner = bigger_moment
             video_winner = counter
-    counter += 1
+        counter += 1
     return lt.getElement(list_data, video_winner), actual_winner
 
 #Requerimiento 4
